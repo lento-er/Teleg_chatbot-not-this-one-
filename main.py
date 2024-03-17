@@ -4,7 +4,7 @@ import os
 from telegram import Update
 from telegram.ext import ApplicationBuilder, ContextTypes, CommandHandler,MessageHandler,filters
 
-from ChatGPT_HKBU import HKBU_ChatGPT
+from ChatGPT_HKBU1 import HKBU_ChatGPT
 
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -44,7 +44,15 @@ class TelegramBot:
 
     async def equiped_chatgpt(self,update: Update, context: ContextTypes.DEFAULT_TYPE):
         # 对接chatgpt的函数，将用户的消息，通过chatgpt接口发送出去，并获取chatgpt的回复，然后发送给用户
-        reply_message = self.chatgpt.submit(update.message.text)
+        reply_message = self.chatgpt.submit([{"role": "user", "content": update.message.text}])
+        await context.bot.send_message(chat_id=update.effective_chat.id, text=reply_message)
+        
+    async def mark(self,update,context):
+        message = [
+            {"role":"system","content":"你是一个书评及影视作者，当我给你一本书名或者一部电影时，请给出打分及评论，满分是10分"},
+            {"role":"user","content":context.args[0]}
+        ]
+        reply_message = self.chatgpt.submit(message)
         await context.bot.send_message(chat_id=update.effective_chat.id, text=reply_message)
 
     def main(self):
@@ -56,6 +64,7 @@ class TelegramBot:
         self.application.add_handler(CommandHandler('add', self.add))
         # 创建一个CommandHandler，处理用户发送的命令，当用户发送/caps命令时，调用caps函数
         self.application.add_handler(CommandHandler('caps', self.caps))
+        self.application.add_handler(CommandHandler('mark', self.mark))
 
         # 启动
         self.application.run_polling()
@@ -65,3 +74,5 @@ class TelegramBot:
 if __name__ == '__main__':
     tel_chatgpt_bot = TelegramBot()
     tel_chatgpt_bot.main()
+
+

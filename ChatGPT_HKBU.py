@@ -6,12 +6,11 @@ class HKBU_ChatGPT():
 
     def submit(self, message):
         logging.info(f'用户发过来的消息是:{message}')
-        conversation = [{"role": "user", "content": message}]
         url = (os.environ['CHATGPTBASICURL']) + "/deployments/" + (
         os.environ['CHATGPTMODELNAME']) + "/chat/completions/?api-version=" + (
               os.environ['CHATGPTAPIVERSION'])
         headers = {'Content-Type': 'application/json', 'api-key': (os.environ['CHATGPTACCESS_TOKEN'])}
-        payload = {'messages': conversation}
+        payload = {'messages': message}
         response = requests.post(url, json=payload, headers=headers)
         if response.status_code == 200:
             data = response.json()
