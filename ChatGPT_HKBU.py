@@ -15,7 +15,7 @@ class HKBU_ChatGPT():
         if response.status_code == 200:
             data = response.json()
             logging.info(f'chatgpt回复的消息是:{data}')
-            return data['choices'][0]['message']['content']
+            return data['choices'][0]['message']
         else:
             logging.error(f'Error:{response.status_code} {response.text}'
                           f'\nPlease check your API key and network connection')
