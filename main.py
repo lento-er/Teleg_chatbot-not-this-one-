@@ -4,7 +4,7 @@ import os
 from telegram import Update
 from telegram.ext import ApplicationBuilder, ContextTypes, CommandHandler,MessageHandler,filters
 
-from ChatGPT_HKBU1 import HKBU_ChatGPT
+from ChatGPT_HKBU import HKBU_ChatGPT
 
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
