@@ -19,7 +19,7 @@ class TelegramBot:
 
     # 下方的async开头的函数是Telegram Bot API规定的函数格式，用于处理用户发送的消息，可以根据实际需求进行新增、改写
     # update: 用户发送的消息 context: 上下文
-        async def start(self,update: Update, context: ContextTypes.DEFAULT_TYPE):
+    async def start(self,update: Update, context: ContextTypes.DEFAULT_TYPE):
         # 定义一个start函数，后面会跟/start命令进行关联，当用户发送/start命令时，使用该函数回复一条消息，信息内容为text
         # chat_id为用户发送消息的会话ID,text为回复的消息内容
         await context.bot.send_message(chat_id=update.effective_chat.id, text="I'm a bot, please talk to me! you can use /help to see what I can do!")
