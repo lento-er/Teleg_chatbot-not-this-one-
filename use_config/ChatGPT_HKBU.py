@@ -24,7 +24,8 @@ class HKBU_ChatGPT():
             print(f'Response:{data}')
             return data['choices'][0]['message']['content']
         else:
-            return 'Error:', response
+            logging.error(f'Error:{response.status_code} {response.text}'
+                          f'\nPlease check your API key and network connection')
 
 
 if __name__ == '__main__':

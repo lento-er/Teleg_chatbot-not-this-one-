@@ -55,10 +55,13 @@ class TelegramBot:
         else:
             content = msg
         reply_message = self.chatgpt.submit(content)
-        content.append(reply_message)
-        # print(content)
-        self.redis1.set(user_id, json.dumps(content))
-        return reply_message['content']
+        if reply_message:
+            content.append(reply_message)
+            logging.info(content)
+            self.redis1.set(user_id, json.dumps(content))
+            return reply_message['content']
+        else:
+            return "ERROR, I'm sorry, I can't get answer from chatgpt. please check log and try again."
 
     async def equiped_chatgpt(self,update: Update, context: ContextTypes.DEFAULT_TYPE):
         # 对接chatgpt的函数，将用户的消息，通过chatgpt接口发送出去，并获取chatgpt的回复，然后发送给用户
@@ -67,6 +70,9 @@ class TelegramBot:
         await context.bot.send_message(chat_id=update.effective_chat.id, text=reply_message)
 
     async def mark(self,update,context):
+        if len(context.args) == 0:
+            await context.bot.send_message(chat_id=update.effective_chat.id, text="Please provide some text to capitalize!")
+            return
         msg = [
             # {"role":"system","content":"你是一个书评及影视作者，当我给你一本书名或者一部电影时，请给出打分及评论，满分是10分"},
             {"role":"user","content":f"我给你一本书或者一部电影的标题，你需要先给出评分，然后介绍并评论，标题是：{context.args[0]}"}
@@ -110,3 +116,5 @@ class TelegramBot:
 if __name__ == '__main__':
     tel_chatgpt_bot = TelegramBot()
     tel_chatgpt_bot.main()
+
+
