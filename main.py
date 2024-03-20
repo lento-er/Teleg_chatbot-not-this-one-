@@ -72,7 +72,7 @@ class TelegramBot:
             return
         msg = [
             # {"role":"system","content":"你是一个书评及影视作者，当我给你一本书名或者一部电影时，请给出打分及评论，满分是10分"},
-            {"role":"user","content":f"我给你一本书或者一部电影的标题，你需要先给出评分，然后介绍并评论，标题是：{context.args[0]}"}
+            {"role":"user","content":f"我给你一本书或者一部电影的标题，你需要先给出评分，然后介绍并评论，使用英文回答，标题是：{context.args[0]}"}
         ]
         reply_message = self.parse_msg(update,msg)
         await context.bot.send_message(chat_id=update.effective_chat.id, text=reply_message)
